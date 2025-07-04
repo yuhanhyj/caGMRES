@@ -7,7 +7,12 @@
  * @brief Communication-Avoiding GMRES solver with s-step method and non-blocking communications
  * 
  * This function implements the CA-GMRES algorithm that reduces global communication
- * by using s-step blocking and delayed orthogonalization techniques. 
+ * by using s-step blocking and delayed orthogonalization techniques.
+ * 
+ * Key features:
+ * - Reduces communication frequency by factor of s
+ * - Uses non-blocking MPI operations for overlap
+ * - Implements numerically stable orthogonalization
  */
 int ca_gmres_solve(
     const double *A, const int *ja, const int *ia,

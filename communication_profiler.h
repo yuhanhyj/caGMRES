@@ -8,6 +8,7 @@ typedef struct {
    double total_time;
    double computation_time;
    double communication_time;
+   double idle_time;  // Added idle time tracking
    
    // Inner product statistics
    int inner_product_count;
