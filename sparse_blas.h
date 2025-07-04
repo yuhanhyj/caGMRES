@@ -2,6 +2,10 @@
 #define SPARSE_BLAS_H
 #include <mpi.h>
 
+// Performance tuning parameters
+#define CACHE_LINE_SIZE 64
+#define VECTOR_BLOCK_SIZE 512
+
 // Try different BLAS interfaces (CBLAS is preferred but not always available)
 #ifdef __APPLE__
 #include <Accelerate/Accelerate.h>
