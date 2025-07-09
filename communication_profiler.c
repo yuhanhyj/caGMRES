@@ -121,3 +121,53 @@ void cleanupCommunicationProfiler()
 
     memset(&g_comm_profile, 0, sizeof(CommunicationProfile));
 }
+
+void recordBandwidthUsage(double data_size, double transfer_time)
+{
+    // Record bandwidth usage for performance analysis
+    if (transfer_time > 0) {
+        double bandwidth = data_size / transfer_time / (1024.0 * 1024.0); // MB/s
+        // Could store in a bandwidth tracking array if needed
+    }
+}
+
+void calculateEfficiencyMetrics(int rank, int num_procs, MPI_Comm *communicator)
+{
+    double parallel_efficiency = 0.0;
+    double communication_overhead = 0.0;
+    
+    if (g_comm_profile.total_time > 0) {
+        communication_overhead = (g_comm_profile.communication_time / g_comm_profile.total_time) * 100.0;
+        parallel_efficiency = (g_comm_profile.computation_time / g_comm_profile.total_time) * 100.0;
+    }
+    
+    if (rank == 0) {
+        printf("\n--- EFFICIENCY METRICS ---\n");
+        printf("Parallel Efficiency: %.2f%%\n", parallel_efficiency);
+        printf("Communication Overhead: %.2f%%\n", communication_overhead);
+        printf("Load Balance Factor: %.2f\n", parallel_efficiency / 100.0);
+    }
+}
+
+void exportPerformanceDataCSV(const char *filename, int rank)
+{
+    if (rank == 0) {
+        FILE *file = fopen(filename, "w");
+        if (file) {
+            fprintf(file, "Metric,Value\n");
+            fprintf(file, "Total Time,%.6f\n", g_comm_profile.total_time);
+            fprintf(file, "Computation Time,%.6f\n", g_comm_profile.computation_time);
+            fprintf(file, "Communication Time,%.6f\n", g_comm_profile.communication_time);
+            fprintf(file, "Inner Product Count,%d\n", g_comm_profile.inner_product_count);
+            fprintf(file, "Vector Sync Count,%d\n", g_comm_profile.vector_sync_count);
+            fprintf(file, "Total Iterations,%d\n", g_comm_profile.total_iterations);
+            fclose(file);
+            printf("Performance data exported to %s\n", filename);
+        }
+    }
+}
+
+CommunicationProfile* getCurrentProfile()
+{
+    return &g_comm_profile;
+}
