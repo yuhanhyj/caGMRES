@@ -10,15 +10,31 @@
 // Original functions remain unchanged
 int sparseMatrixVectorMultiply(const double *values, const int *col_indices, const int *row_ptr, const double *q_vector, double *u_vector, int local_rows)
 {
+    // Optimized version with loop unrolling for better performance
     for (int i = 0; i < local_rows; i++)
     {
-        u_vector[i] = 0.0;
+        double sum = 0.0;
         const int start_idx = row_ptr[i];
         const int end_idx = row_ptr[i + 1];
-        for (int j = start_idx; j < end_idx; j++)
+        const int num_elements = end_idx - start_idx;
+        
+        // Process 4 elements at a time for better pipeline utilization
+        int j = start_idx;
+        for (; j < end_idx - 3; j += 4)
         {
-            u_vector[i] += values[j] * q_vector[col_indices[j]];
+            sum += values[j] * q_vector[col_indices[j]];
+            sum += values[j+1] * q_vector[col_indices[j+1]];
+            sum += values[j+2] * q_vector[col_indices[j+2]];
+            sum += values[j+3] * q_vector[col_indices[j+3]];
         }
+        
+        // Handle remaining elements
+        for (; j < end_idx; j++)
+        {
+            sum += values[j] * q_vector[col_indices[j]];
+        }
+        
+        u_vector[i] = sum;
     }
     return 0;
 }
