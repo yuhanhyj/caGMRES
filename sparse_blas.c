@@ -42,10 +42,29 @@ int sparseMatrixVectorMultiply(const double *values, const int *col_indices, con
 int parallelDotProduct1(const double *vector_a, const double *vector_b, double *result, int local_size, MPI_Comm *communicator)
 {
     double local_dot_product = 0.0;
-    for (int i = 0; i < local_size; i++)
+    
+    // Optimized with loop unrolling and accumulator variables
+    int i = 0;
+    double acc1 = 0.0, acc2 = 0.0, acc3 = 0.0, acc4 = 0.0;
+    
+    // Process 4 elements at a time
+    for (; i < local_size - 3; i += 4)
+    {
+        acc1 += vector_a[i] * vector_b[i];
+        acc2 += vector_a[i+1] * vector_b[i+1];
+        acc3 += vector_a[i+2] * vector_b[i+2];
+        acc4 += vector_a[i+3] * vector_b[i+3];
+    }
+    
+    // Handle remaining elements
+    for (; i < local_size; i++)
     {
         local_dot_product += vector_a[i] * vector_b[i];
     }
+    
+    // Combine accumulators
+    local_dot_product += acc1 + acc2 + acc3 + acc4;
+    
     MPI_Allreduce(&local_dot_product, result, 1, MPI_DOUBLE, MPI_SUM, *communicator);
     return 0;
 }
