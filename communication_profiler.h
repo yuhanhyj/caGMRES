@@ -59,24 +59,4 @@ void printDetailedPerformanceReport(int rank, MPI_Comm *communicator);
 */
 void cleanupCommunicationProfiler();
 
-/**
-* @brief Record bandwidth usage for data transfers
-*/
-void recordBandwidthUsage(double data_size, double transfer_time);
-
-/**
-* @brief Calculate and display efficiency metrics
-*/
-void calculateEfficiencyMetrics(int rank, int num_procs, MPI_Comm *communicator);
-
-/**
-* @brief Export performance data to CSV format
-*/
-void exportPerformanceDataCSV(const char *filename, int rank);
-
-/**
-* @brief Get current performance statistics
-*/
-CommunicationProfile* getCurrentProfile();
-
 #endif // COMMUNICATION_PROFILER_H
