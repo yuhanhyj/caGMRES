@@ -117,14 +117,12 @@ int synchronizeVector1(int rank, int num_procs, double *vector_data,
                       const int *recv_counts, int **const recv_lists,
                       MPI_Comm *communicator)
 {
-    // Optimized version with pre-allocated request array
-    const int max_requests = (num_procs - 1) * 2;
-    MPI_Request requests[max_requests];
+
+    MPI_Request requests[(num_procs - 1) * 2];
     int request_count = 0;
 
-    // Use calloc for zero-initialization
-    double **send_buffers = (double **)calloc(num_procs, sizeof(double *));
-    double **recv_buffers = (double **)calloc(num_procs, sizeof(double *));
+    double **send_buffers = (double **)malloc(num_procs * sizeof(double *));
+    double **recv_buffers = (double **)malloc(num_procs * sizeof(double *));
 
     for (int p = 0; p < num_procs; p++)
     {
