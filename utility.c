@@ -14,20 +14,8 @@ void printCommandSyntax()
     // 使用 fprintf(stderr, ...) 将错误信息输出到标准错误流，这是一种好的实践。
     // \n 是换行符，使输出更整洁。
     // 注意：这里的用法说明已根据 README.md 和 mpi_gmres.c 的实际情况更新。
-    fprintf(stderr, "\n===============================================\n");
-    fprintf(stderr, "Error: Not enough or incorrect input arguments.\n");
-    fprintf(stderr, "===============================================\n\n");
-    fprintf(stderr, "Usage: mpirun -np <processes> ./gmres <matrix_file> <rhs_file> <iterations> <preconditioner_flag> <restarts> [s_value]\n\n");
-    fprintf(stderr, "Parameters:\n");
-    fprintf(stderr, "  <processes>          - Number of MPI processes\n");
-    fprintf(stderr, "  <matrix_file>        - Sparse matrix file in Matrix Market format\n");
-    fprintf(stderr, "  <rhs_file>           - Right-hand side vector file\n");
-    fprintf(stderr, "  <iterations>         - Maximum GMRES iterations per restart\n");
-    fprintf(stderr, "  <preconditioner_flag>- 0 (disabled) or 1 (diagonal preconditioning)\n");
-    fprintf(stderr, "  <restarts>           - Maximum number of restarts\n");
-    fprintf(stderr, "  [s_value]            - Optional: s-step parameter (default=1)\n");
-    fprintf(stderr, "                         s=1: Classical GMRES\n");
-    fprintf(stderr, "                         s>1: CA-GMRES with s-step blocking\n\n");
+    fprintf(stderr, "\nError: Not enough or incorrect input arguments.\n");
+    fprintf(stderr, "Syntax: mpirun -np <processes> ./gmres <matrix_file> <rhs_file> <iterations> <preconditioner_flag> <restarts>\n\n");
 }
 
 /**
