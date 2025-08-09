@@ -5,9 +5,6 @@
 #include <string.h>
 #include "communication_profiler.h"
 
-#define VERSION "2.0.0"
-#define BUILD_DATE "2025-07-05"
-
 #include "utility.h"
 #include "sparse_matrix_reader.h"
 #include "localization.h"
