@@ -89,7 +89,6 @@ int main(int argc, char *argv[])
     
     if (rank == 0)
     {
-        printf("Parallel GMRES Solver v%s (Built: %s)\n", VERSION, BUILD_DATE);
         if (use_ca_gmres) {
             printf("Info: Using CA-GMRES algorithm with s-step = %d\n", s_param);
             printf("Info: Features: delayed orthogonalization, non-blocking communications\n");
