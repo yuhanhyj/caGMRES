@@ -1,5 +1,5 @@
 CC = mpicc
-CFLAGS = -Wall -g -O3 -march=native -std=c99 -Wno-unused-result -Wno-stringop-overflow
+CFLAGS = -Wall -g -O3 -std=c99 -Wno-unused-result -Wno-stringop-overflow
 # Try to detect and link BLAS library
 ifeq ($(shell uname),Darwin)
     # macOS: Use Accelerate Framework
