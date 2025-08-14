@@ -115,7 +115,7 @@ int findMaxInIntArray(const int *array, int size)
 
 /**
  * @brief Load the RHS vector b from the file and scatter it across all processes."​​(Uses "scatter," a common MPI term for distributing data.)
- 
+
  */
 int readRHSVector(const char *filename, int num_procs, int rank, int global_rows, int local_rows, double *local_b_vector)
 {
@@ -177,8 +177,7 @@ int readRHSVector(const char *filename, int num_procs, int rank, int global_rows
         local_rows,
         MPI_DOUBLE,
         0,
-        MPI_COMM_WORLD
-    );
+        MPI_COMM_WORLD);
 
     if (rank == 0)
     {
@@ -192,6 +191,6 @@ int readRHSVector(const char *filename, int num_procs, int rank, int global_rows
 
 int printLocalMatrix(int local_non_zeros, int local_rows, const int *row_ptr, const int *col_indices, const double *values)
 {
-    
+
     return 0;
 }

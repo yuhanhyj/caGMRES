@@ -3,20 +3,21 @@
 #include <mpi.h>
 
 // Communication performance statistics structure
-typedef struct {
+typedef struct
+{
    // Overall statistics
    double total_time;
    double computation_time;
    double communication_time;
-   
+
    // Inner product statistics
    int inner_product_count;
    double inner_product_time;
-   
+
    // Vector synchronization statistics
    int vector_sync_count;
    double vector_sync_time;
-   
+
    // Other statistics
    int total_iterations;
 } CommunicationProfile;
@@ -25,38 +26,38 @@ typedef struct {
 extern CommunicationProfile g_comm_profile;
 
 /**
-* @brief Initialize communication performance profiler
-*/
+ * @brief Initialize communication performance profiler
+ */
 void initCommunicationProfiler(int rank, int num_procs);
 
 /**
-* @brief Record communication overhead of inner product operations
-*/
+ * @brief Record communication overhead of inner product operations
+ */
 void recordInnerProductCommunication(double comm_time);
 
 /**
-* @brief Record communication overhead of vector synchronization
-*/
+ * @brief Record communication overhead of vector synchronization
+ */
 void recordVectorSynchronization(double sync_time);
 
 /**
-* @brief Record iteration information
-*/
+ * @brief Record iteration information
+ */
 void recordIteration();
 
 /**
-* @brief Record computation time
-*/
+ * @brief Record computation time
+ */
 void recordComputation(double comp_time);
 
 /**
-* @brief Print detailed communication performance report
-*/
+ * @brief Print detailed communication performance report
+ */
 void printDetailedPerformanceReport(int rank, MPI_Comm *communicator);
 
 /**
-* @brief Clean up performance profiler resources
-*/
+ * @brief Clean up performance profiler resources
+ */
 void cleanupCommunicationProfiler();
 
 #endif // COMMUNICATION_PROFILER_H

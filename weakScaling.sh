@@ -22,7 +22,7 @@ WEAK_SCALING_CONFIG[16]="matrices/weakScaling/16p_F2.mtx:matrices/weakScaling/16
 WEAK_SCALING_CONFIG[20]="matrices/weakScaling/20p_s3dkt3m2.mtx:matrices/weakScaling/20p_s3dkt3m2_rhs.mtx"
 
 # GMRES parameters - Enhanced convergence
-ITERATIONS=30  # Increase iterations to ensure convergence
+ITERATIONS=50  # Increase iterations to ensure convergence
 PRECOND=1       # Enable preconditioning
 RESTARTS=30     # Increase restart count
 

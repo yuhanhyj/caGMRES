@@ -9,7 +9,7 @@
 #include "sparse_matrix_reader.h"
 #include "localization.h"
 #include "sparse_blas.h"
-#include "ca_gmres.h" 
+#include "ca_gmres.h"
 
 void cleanup(int num_procs, int gmres_iters,
              double *A, int *ia, int *ja, double *b, double *x,
@@ -64,8 +64,8 @@ int main(int argc, char *argv[])
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &num_procs);
     MPI_Comm communicator = MPI_COMM_WORLD;
-    
-    // Initialize communication performance profiler 
+
+    // Initialize communication performance profiler
     initCommunicationProfiler(rank, num_procs);
 
     if (argc < 6)
@@ -84,15 +84,18 @@ int main(int argc, char *argv[])
     const double true_residual_tol = 1.e-9;
     const int s_param = (argc >= 7) ? atoi(argv[6]) : 1;
 
-    //Determine which algorithm to use based on s_param
+    // Determine which algorithm to use based on s_param
     int use_ca_gmres = (s_param > 1) ? 1 : 0;
-    
+
     if (rank == 0)
     {
-        if (use_ca_gmres) {
+        if (use_ca_gmres)
+        {
             printf("Info: Using CA-GMRES algorithm with s-step = %d\n", s_param);
             printf("Info: Features: delayed orthogonalization, non-blocking communications\n");
-        } else {
+        }
+        else
+        {
             printf("Info: Using Classical GMRES algorithm (s-step = %d)\n", s_param);
         }
         printf("Info: max_restarts = %d, preconditioner = %s\n",
@@ -154,15 +157,17 @@ int main(int argc, char *argv[])
     t_start = MPI_Wtime();
 
     // Choose algorithm based on s_param
-    if (use_ca_gmres) {
-        //Use CA-GMRES algorithm
-        if (rank == 0) {
+    if (use_ca_gmres)
+    {
+        // Use CA-GMRES algorithm
+        if (rank == 0)
+        {
             printf("\n=== Starting CA-GMRES Solver ===\n");
         }
-        
+
         int ca_converged = 0;
         int ca_total_iterations = 0;
-        
+
         int result = ca_gmres_solve(
             A, ja, ia, b_original, x,
             local_rows, n_total, global_rows,
@@ -171,28 +176,33 @@ int main(int argc, char *argv[])
             preconditioner_flag, M_inv,
             rank, num_procs, &communicator,
             cntsent, to_be_sent, cntowner, receive,
-            &ca_total_iterations, &ca_converged
-        );
-        
-        if (result == 0) {
+            &ca_total_iterations, &ca_converged);
+
+        if (result == 0)
+        {
             completed = ca_converged;
             total_iterations = ca_total_iterations;
-        } else {
-            if (rank == 0) {
+        }
+        else
+        {
+            if (rank == 0)
+            {
                 fprintf(stderr, "Error: CA-GMRES solver failed\n");
             }
             MPI_Abort(communicator, 1);
         }
-        
+
         // Leave V, h, g, c, s as NULL for CA-GMRES since it manages its own memory
-        
-    } else {
-        //Use Classical GMRES algorithm
-        if (rank == 0) {
+    }
+    else
+    {
+        // Use Classical GMRES algorithm
+        if (rank == 0)
+        {
             printf("\n=== Starting Classical GMRES Solver ===\n");
         }
-        
-        //Allocate memory for classical GMRES (local scope)
+
+        // Allocate memory for classical GMRES (local scope)
         double **V = (double **)malloc((gmres_iterations + 1) * sizeof(double *));
         double **h = (double **)malloc((gmres_iterations + 1) * sizeof(double *));
         for (i = 0; i <= gmres_iterations; i++)
@@ -323,8 +333,8 @@ int main(int argc, char *argv[])
                 completed = 1;
             }
         }
-        
-        //Free classical GMRES memory in local scope
+
+        // Free classical GMRES memory in local scope
         for (i = 0; i <= gmres_iterations; i++)
         {
             free(V[i]);
@@ -344,14 +354,16 @@ int main(int argc, char *argv[])
     int *recvcounts = NULL;
     int *displs = NULL;
 
-    if (rank == 0) {
+    if (rank == 0)
+    {
         full_solution = (double *)malloc(global_rows * sizeof(double));
         recvcounts = (int *)malloc(num_procs * sizeof(int));
         displs = (int *)malloc(num_procs * sizeof(int));
         int base = global_rows / num_procs;
         int extra = global_rows % num_procs;
         int offset = 0;
-        for (int i = 0; i < num_procs; i++) {
+        for (int i = 0; i < num_procs; i++)
+        {
             recvcounts[i] = base + (i < extra ? 1 : 0);
             displs[i] = offset;
             offset += recvcounts[i];
@@ -361,73 +373,86 @@ int main(int argc, char *argv[])
     MPI_Gatherv(x, local_rows, MPI_DOUBLE, full_solution, recvcounts, displs, MPI_DOUBLE, 0, communicator);
 
     g_comm_profile.total_time = t_end - t_start;
-    
+
     // Output detailed communication performance analysis
     printDetailedPerformanceReport(rank, &communicator);
-    
+
     if (rank == 0)
     {
         const char *algorithm_name = use_ca_gmres ? "CA-GMRES" : "Classical GMRES";
         if (completed)
-            printf("\n%s algorithm converged successfully after %d total iterations.\n", 
+            printf("\n%s algorithm converged successfully after %d total iterations.\n",
                    algorithm_name, total_iterations);
         else
-            printf("\nWarning: %s algorithm did not converge within %d restarts.\n", 
+            printf("\nWarning: %s algorithm did not converge within %d restarts.\n",
                    algorithm_name, max_restarts);
-        printf("Total execution time: %f seconds.\n", (t_end - t_start));
+        // printf("Total execution time: %f seconds.\n", (t_end - t_start));
     }
 
     if (rank == 0)
     {
-        printDoubleArray("Final solution (full)", full_solution, global_rows);
-        //Safe cleanup for rank 0 only
-        if (full_solution) {
+        // printDoubleArray("Final solution (full)", full_solution, global_rows);
+        // Safe cleanup for rank 0 only
+        if (full_solution)
+        {
             free(full_solution);
             full_solution = NULL;
         }
-        if (recvcounts) {
+        if (recvcounts)
+        {
             free(recvcounts);
             recvcounts = NULL;
         }
-        if (displs) {
+        if (displs)
+        {
             free(displs);
             displs = NULL;
         }
     }
 
-    // Cleanup performance profiler 
+    // Cleanup performance profiler
     cleanupCommunicationProfiler();
-    
-    //Simplified cleanup - let each algorithm handle its own memory
-    // Only cleanup the common resources
-    if (rank == 0 && full_solution) {
+
+    // Simplified cleanup - let each algorithm handle its own memory
+    //  Only cleanup the common resources
+    if (rank == 0 && full_solution)
+    {
         free(full_solution);
     }
-    if (rank == 0) {
-        if (recvcounts) free(recvcounts);
-        if (displs) free(displs);
+    if (rank == 0)
+    {
+        if (recvcounts)
+            free(recvcounts);
+        if (displs)
+            free(displs);
     }
-    
+
     // Cleanup matrix and communication data
     free(A);
     free(ia);
     free(ja);
     free(x);
     free(X);
-    if (M_inv) free(M_inv);
-    if (b_original) free(b_original);
-    
+    if (M_inv)
+        free(M_inv);
+    if (b_original)
+        free(b_original);
+
     // Cleanup communication arrays
     free(cntsent);
     free(cntowner);
-    if (to_be_sent) {
+    if (to_be_sent)
+    {
         for (int i = 0; i < num_procs; ++i)
-            if (to_be_sent[i]) free(to_be_sent[i]);
+            if (to_be_sent[i])
+                free(to_be_sent[i]);
         free(to_be_sent);
     }
-    if (receive) {
+    if (receive)
+    {
         for (int i = 0; i < num_procs; ++i)
-            if (receive[i]) free(receive[i]);
+            if (receive[i])
+                free(receive[i]);
         free(receive);
     }
 

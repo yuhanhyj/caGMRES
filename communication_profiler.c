@@ -63,6 +63,7 @@ void printDetailedPerformanceReport(int rank, MPI_Comm *communicator)
     global_comm_time /= g_num_procs;
     global_comp_time /= g_num_procs;
     double total_time = global_comm_time + global_comp_time;
+    // double total_time = g_comm_profile.total_time;
 
     if (rank == 0)
     {
