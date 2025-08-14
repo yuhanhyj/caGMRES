@@ -1,29 +1,29 @@
-#include <stdio.h>       // 用于 printf 函数
-#include <stdlib.h>      // C标准库，在大型项目中通常包含以备不时之需
-#include <mpi.h>         // 确保包含了 mpi.h
-#include "sparse_blas.h" // 需要 parallelDotProduct
-// 包含我们自己的头文件，确保实现与声明一致
+#include <stdio.h>       // For printf function
+#include <stdlib.h>      // C standard library, usually included in large projects for future needs
+#include <mpi.h>         // Ensure mpi.h is included
+#include "sparse_blas.h" // Need parallelDotProduct
+// Include our own header file to ensure implementation matches declaration
 #include "utility.h"
 
 /**
- * @brief 打印程序的命令行用法说明。
- * 当用户提供错误或不足的参数时调用此函数。
+ * @brief Print command line usage instructions for the program.
+ * This function is called when the user provides incorrect or insufficient arguments.
  */
 void printCommandSyntax()
 {
-    // 使用 fprintf(stderr, ...) 将错误信息输出到标准错误流，这是一种好的实践。
-    // \n 是换行符，使输出更整洁。
-    // 注意：这里的用法说明已根据 README.md 和 mpi_gmres.c 的实际情况更新。
+    // Using fprintf(stderr, ...) to output error messages to standard error stream is a good practice.
+    // \n is a newline character, making the output cleaner.
+    // Note: The usage instructions here have been updated according to the actual situation in README.md and mpi_gmres.c.
     fprintf(stderr, "\nError: Not enough or incorrect input arguments.\n");
     fprintf(stderr, "Syntax: mpirun -np <processes> ./gmres <matrix_file> <rhs_file> <iterations> <preconditioner_flag> <restarts>\n\n");
 }
 
 /**
- * @brief 打印一个双精度浮点数矩阵。
- * @param name 矩阵的描述性名称，用于输出时标识。
- * @param matrixData 指向矩阵数据的指针 (按行主序存储)。
- * @param numRows 矩阵的行数。
- * @param numCols 矩阵的列数。
+ * @brief Print a double precision floating point matrix.
+ * @param name Descriptive name of the matrix, used for identification in output.
+ * @param matrixData Pointer to matrix data (stored in row-major order).
+ * @param numRows Number of rows in the matrix.
+ * @param numCols Number of columns in the matrix.
  */
 void printDoubleMatrix(const char *name, const double *matrixData, int numRows, int numCols)
 {
@@ -32,26 +32,26 @@ void printDoubleMatrix(const char *name, const double *matrixData, int numRows, 
     {
         for (int j = 0; j < numCols; j++)
         {
-            // 通过行主序计算一维数组中的索引
+            // Calculate index in one-dimensional array using row-major order
             int index = i * numCols + j;
 
-            // 使用 %14.7f 格式化输出，总宽度14，保留7位小数，更易于对齐和阅读
+            // Use %14.7f for formatted output, total width 14, 7 decimal places, easier to align and read
             printf("%14.7f", matrixData[index]);
 
-            // 只要不是行尾的最后一个元素，就打印一个逗号和空格
+            // Print a comma and space as long as it's not the last element in the row
             if (j < numCols - 1)
             {
                 printf(", ");
             }
         }
-        printf("\n"); // 每打印完一行后换行
+        printf("\n"); // Line break after printing each row
     }
     printf("--- End of Matrix: %s ---\n\n", name);
 }
 
 /**
- * @brief 打印一个整数矩阵。
- * (函数结构与 printDoubleMatrix 非常相似)
+ * @brief Print an integer matrix.
+ * (Function structure is very similar to printDoubleMatrix)
  */
 void printIntMatrix(const char *name, const int *matrixData, int numRows, int numCols)
 {
@@ -61,7 +61,7 @@ void printIntMatrix(const char *name, const int *matrixData, int numRows, int nu
         for (int j = 0; j < numCols; j++)
         {
             int index = i * numCols + j;
-            // %8d 表示打印一个整数，宽度为8，使其对齐
+            // %8d means print an integer with width 8 for alignment
             printf("%8d", matrixData[index]);
             if (j < numCols - 1)
             {
@@ -74,25 +74,25 @@ void printIntMatrix(const char *name, const int *matrixData, int numRows, int nu
 }
 
 /**
- * @brief 打印一个双精度浮点数一维数组。
- * @param name 数组的描述性名称。
- * @param arrayData 指向数组数据的指针。
- * @param size 数组中的元素数量。
+ * @brief Print a double precision floating point one-dimensional array.
+ * @param name Descriptive name of the array.
+ * @param arrayData Pointer to array data.
+ * @param size Number of elements in the array.
  */
 void printDoubleArray(const char *name, const double *arrayData, int size)
 {
     printf("\n--- Array: %s ---\n", name);
     for (int i = 0; i < size; i++)
     {
-        // 打印每个元素的索引和值
+        // Print index and value of each element
         printf("%s[%d] = %f\n", name, i, arrayData[i]);
     }
     printf("--- End of Array: %s ---\n\n", name);
 }
 
 /**
- * @brief 打印一个整数一维数组。
- * (函数结构与 printDoubleArray 非常相似)
+ * @brief Print an integer one-dimensional array.
+ * (Function structure is very similar to printDoubleArray)
  */
 void printIntArray(const char *name, const int *arrayData, int size)
 {
@@ -109,7 +109,7 @@ void checkOrthogonality(const char *name, double **V, int num_vectors, int local
     if (num_vectors <= 0)
         return;
 
-    // 只有0号进程负责分配、计算和打印
+    // Only process 0 is responsible for allocation, calculation and printing
     double *vtv_matrix = NULL;
     if (rank == 0)
     {
@@ -120,7 +120,7 @@ void checkOrthogonality(const char *name, double **V, int num_vectors, int local
         }
     }
 
-    // 各进程协同计算 V[i]·V[j]
+    // All processes collaboratively compute V[i]·V[j]
     for (int i = 0; i < num_vectors; i++)
     {
         for (int j = 0; j < num_vectors; j++)
@@ -135,7 +135,7 @@ void checkOrthogonality(const char *name, double **V, int num_vectors, int local
         }
     }
 
-    // 0号进程打印结果
+    // Process 0 prints the results
     if (rank == 0)
     {
         printDoubleMatrix(name, vtv_matrix, num_vectors, num_vectors);

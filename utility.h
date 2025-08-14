@@ -1,37 +1,37 @@
 #ifndef UTILITY_H
 #define UTILITY_H
 
-// 打印程序如何运行的命令行语法提示
+// Print command line syntax instructions for how to run the program
 void printCommandSyntax();
 
-// 打印一个双精度浮点数矩阵
-// name: 矩阵的描述性名称
-// matrixData: 指向矩阵数据的指针 (按行主序存储)
-// numRows: 矩阵的行数
-// numCols: 矩阵的列数
+// Print a double precision floating point matrix
+// name: Descriptive name of the matrix
+// matrixData: Pointer to matrix data (stored in row-major order)
+// numRows: Number of rows in the matrix
+// numCols: Number of columns in the matrix
 void printDoubleMatrix(const char *name, const double *matrixData, int numRows, int numCols);
 
-// 打印一个整数矩阵
+// Print an integer matrix
 void printIntMatrix(const char *name, const int *matrixData, int numRows, int numCols);
 
-// 打印一个双精度浮点数数组
-// name: 数组的描述性名称
-// arrayData: 指向数组数据的指针
-// size: 数组中的元素数量
+// Print a double precision floating point array
+// name: Descriptive name of the array
+// arrayData: Pointer to array data
+// size: Number of elements in the array
 void printDoubleArray(const char *name, const double *arrayData, int size);
 
-// 打印一个整数数组
+// Print an integer array
 void printIntArray(const char *name, const int *arrayData, int size);
 
 /**
- * @brief 检查一组分布式向量的正交性，由0号进程打印 V^T * V 矩阵。
- * @param name 描述性名称
- * @param V 存储向量的数组
- * @param num_vectors 要检查的向量数量
- * @param local_rows 每个进程的向量行数
- * @param n_total 向量总维度（含幽灵点）
- * @param rank 当前进程号
- * @param communicator MPI通信域
+ * @brief Check the orthogonality of a set of distributed vectors, process 0 prints the V^T * V matrix.
+ * @param name Descriptive name
+ * @param V Array storing the vectors
+ * @param num_vectors Number of vectors to check
+ * @param local_rows Number of vector rows per process
+ * @param n_total Total vector dimension (including ghost points)
+ * @param rank Current process number
+ * @param communicator MPI communicator
  */
 void checkOrthogonality(const char *name, double **V, int num_vectors, int local_rows, int n_total, int rank, MPI_Comm *communicator);
 #endif // UTILITY_H
