@@ -1,3 +1,11 @@
+/**
+ * @file localization.h
+ * @brief Parallel communication setup and vector synchronization utilities
+ * 
+ * @details Functions for analyzing sparse matrix dependencies and managing
+ * inter-process communication for distributed matrix-vector operations.
+ */
+
 #ifndef LOCALIZATION_H
 #define LOCALIZATION_H
 #include <mpi.h>

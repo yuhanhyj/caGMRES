@@ -1,3 +1,11 @@
+/**
+ * @file utility.c
+ * @brief Implementation of utility functions for debugging and visualization
+ * 
+ * @details Provides helper functions for printing matrices, vectors, checking
+ * orthogonality, and displaying program usage information.
+ */
+
 #include <stdio.h>       // For printf function
 #include <stdlib.h>      // C standard library, usually included in large projects for future needs
 #include <mpi.h>         // Ensure mpi.h is included

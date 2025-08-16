@@ -1,3 +1,11 @@
+/**
+ * @file communication_profiler.c
+ * @brief Implementation of MPI communication performance profiling
+ * 
+ * @details Tracks and reports communication overhead in parallel GMRES solvers,
+ * including inner products, vector synchronization, and total communication time.
+ */
+
 #include "communication_profiler.h"
 #include <stdio.h>
 #include <stdlib.h>

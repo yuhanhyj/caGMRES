@@ -1,3 +1,11 @@
+/**
+ * @file ca_gmres.c
+ * @brief Communication-Avoiding GMRES solver for parallel sparse linear systems
+ * 
+ * @details Implements s-step CA-GMRES with batched communications to reduce MPI overhead.
+ * Supports preconditioning and automatic restarts.
+ */
+
 #include "ca_gmres.h"
 #include "sparse_blas.h"
 #include "localization.h"

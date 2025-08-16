@@ -1,3 +1,11 @@
+/**
+ * @file communication_profiler.h
+ * @brief MPI communication performance profiling utilities
+ * 
+ * @details Provides structures and functions for measuring and analyzing
+ * MPI communication overhead in parallel GMRES solvers.
+ */
+
 #ifndef COMMUNICATION_PROFILER_H
 #define COMMUNICATION_PROFILER_H
 #include <mpi.h>

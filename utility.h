@@ -1,3 +1,11 @@
+/**
+ * @file utility.h
+ * @brief Utility functions for debugging and program operation
+ * 
+ * @details Helper functions for printing matrices, arrays, and checking
+ * orthogonality in parallel GMRES implementations.
+ */
+
 #ifndef UTILITY_H
 #define UTILITY_H
 

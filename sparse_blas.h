@@ -1,3 +1,11 @@
+/**
+ * @file sparse_blas.h
+ * @brief Sparse BLAS operations for parallel linear algebra
+ * 
+ * @details Functions for sparse matrix-vector multiplication, dot products,
+ * and Arnoldi iterations in distributed computing environments.
+ */
+
 #ifndef SPARSE_BLAS_H
 #define SPARSE_BLAS_H
 #include <mpi.h>

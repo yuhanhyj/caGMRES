@@ -1,3 +1,11 @@
+/**
+ * @file localization.c
+ * @brief Implementation of parallel communication setup for sparse matrices
+ * 
+ * @details Analyzes sparse matrix structure to determine inter-process
+ * communication patterns and provides vector synchronization routines.
+ */
+
 #include "localization.h"
 #include <stdio.h>
 #include <stdlib.h>

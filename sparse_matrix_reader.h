@@ -1,3 +1,11 @@
+/**
+ * @file sparse_matrix_reader.h
+ * @brief Matrix Market format reader for distributed sparse matrices
+ * 
+ * @details Functions for reading and distributing sparse matrices and vectors
+ * from Matrix Market files across MPI processes.
+ */
+
 #ifndef SPARSE_MATRIX_READER_H
 #define SPARSE_MATRIX_READER_H
 

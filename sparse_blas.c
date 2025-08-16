@@ -1,3 +1,11 @@
+/**
+ * @file sparse_blas.c
+ * @brief Implementation of sparse BLAS operations
+ * 
+ * @details Provides optimized sparse matrix operations including matrix-vector
+ * multiplication and parallel dot products for distributed computing.
+ */
+
 #include "sparse_blas.h"
 #include <stdio.h>
 #include <math.h>

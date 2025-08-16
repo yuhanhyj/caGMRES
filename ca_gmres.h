@@ -1,3 +1,11 @@
+/**
+ * @file ca_gmres.h
+ * @brief Header file for Communication-Avoiding GMRES solver
+ * 
+ * @details Declarations for CA-GMRES solver functions with s-step blocking
+ * and batched communications for parallel sparse linear systems.
+ */
+
 #ifndef CA_GMRES_H
 #define CA_GMRES_H
 

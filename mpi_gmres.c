@@ -1,3 +1,11 @@
+/**
+ * @file mpi_gmres.c
+ * @brief Main driver program for parallel GMRES and CA-GMRES solvers
+ * 
+ * @details Implements the main MPI program that reads sparse matrices,
+ * sets up parallel communication, and solves linear systems using GMRES or CA-GMRES.
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <mpi.h>

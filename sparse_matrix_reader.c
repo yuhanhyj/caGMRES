@@ -1,3 +1,11 @@
+/**
+ * @file sparse_matrix_reader.c
+ * @brief Implementation of Matrix Market format reader
+ * 
+ * @details Reads sparse matrices from Matrix Market files and distributes
+ * them across MPI processes in CSR format for parallel processing.
+ */
+
 #include "sparse_matrix_reader.h"
 #include <stdio.h>
 #include <stdlib.h>
