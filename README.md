@@ -25,6 +25,9 @@ Matrix paths and scripts are used by the test workflow.
 
 ```
 make clean
+
+module load mpi/2021.12
+
 make
 ```
 
