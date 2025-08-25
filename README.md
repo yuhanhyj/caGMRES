@@ -28,7 +28,6 @@ make clean
 make
 ```
 
-If shell scripts came from Windows, normalize line endings: `dos2unix *.sh`, then `chmod +x *.sh`. 
 
 ## Quick start
 
