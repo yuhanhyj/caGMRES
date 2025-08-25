@@ -80,14 +80,6 @@ chmod +x strongScaling.sh
 
 Outputs include per-np runs and a consolidated results table.  
 
-### Weak scaling
-
-Runs families of matrices sized for np ∈ {1,4,8,16,20} with both s=1 and s=8.
-
-```
-chmod +x weakScaling.sh 
-./weakScaling.sh
-```
 
 Example invocations emitted by the script include:
 
