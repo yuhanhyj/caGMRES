@@ -11,7 +11,7 @@ An MPI implementation of CA-GMRES with s-step Krylov generation, batched inner p
 │  ├─ dense6x6.mtx
 │  ├─ dense6x6_rhs.mtx
 │  ├─ strongScaling/…        # e.g., s3dkt3m2.mtx and *_rhs.mtx
-│  └─ weakScaling/…          # e.g., nasa4704, bodyy5, pdb1HYS, F2, s3dkt3m2
+│  └─ weakScaling/…          # e.g., P1.mtx and *_rhs.mtx
 ├─ ca_gmres.c
 ├─ ca_gmres.h
 ├─ ·······
@@ -25,6 +25,9 @@ Matrix paths and scripts are used by the test workflow.
 
 ```
 make clean
+
+module load mpi/2021.12
+
 make
 ```
 
@@ -77,28 +80,27 @@ Runs classical GMRES (s=1) and CA-GMRES (s=8) across multiple process counts. Th
 chmod +x strongScaling.sh
 ./strongScaling.sh
 ```
+### Strong scaling
 
-Outputs include per-np runs and a consolidated results table.  
-
-### Weak scaling
-
-Runs families of matrices sized for np ∈ {1,4,8,16,20} with both s=1 and s=8.
+Runs classical GMRES (s=1) and CA-GMRES (s=8) with proportionally scaled problem sizes. The script maintains constant work per processor, repeats each configuration ten times and reports averages, comm time, comm%, inner-product counts, and weak scaling efficiency.
 
 ```
-chmod +x weakScaling.sh 
+chmod +x weakScaling.sh
 ./weakScaling.sh
 ```
+Outputs include per-np runs and a consolidated results table.  
+
 
 Example invocations emitted by the script include:
 
 ```
 # 1 proc
-mpirun -np 1  ./gmres matrices/weakScaling/1p_nasa4704.mtx  matrices/weakScaling/1p_nasa4704_rhs.mtx  50 1 30 1
-mpirun -np 1  ./gmres matrices/weakScaling/1p_nasa4704.mtx  matrices/weakScaling/1p_nasa4704_rhs.mtx  50 1 30 8
+mpirun -np 1  ./gmres matrices/weakScaling/P1.mtx  matrices/weakScaling/P1_rhs.mtx  500 0 100 1
+mpirun -np 1  ./gmres matrices/weakScaling/P1.mtx  matrices/weakScaling/P1_rhs.mtx  500 0 100 8
 
 # 16 procs
-mpirun -np 16 ./gmres matrices/weakScaling/16p_F2.mtx       matrices/weakScaling/16p_F2_rhs.mtx       50 1 30 1
-mpirun -np 16 ./gmres matrices/weakScaling/16p_F2.mtx       matrices/weakScaling/16p_F2_rhs.mtx       50 1 30 8
+mpirun -np 16 ./gmres matrices/weakScaling/P16.mtx  matrices/weakScaling/P16_rhs.mtx 500 0 100 1
+mpirun -np 16 ./gmres matrices/weakScaling/P16.mtx  matrices/weakScaling/P16_rhs.mtx 500 0 100 8
 ```
 
 The script prints per-matrix summaries and a final table.   
