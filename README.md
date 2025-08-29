@@ -85,7 +85,7 @@ chmod +x strongScaling.sh
 Runs classical GMRES (s=1) and CA-GMRES (s=8) with proportionally scaled problem sizes. The script maintains constant work per processor, repeats each configuration ten times and reports averages, comm time, comm%, inner-product counts, and weak scaling efficiency.
 
 ```
-chmod +x weakScaling
+chmod +x weakScaling.sh
 ./weakScaling.sh
 ```
 Outputs include per-np runs and a consolidated results table.  
