@@ -11,7 +11,7 @@ An MPI implementation of CA-GMRES with s-step Krylov generation, batched inner p
 │  ├─ dense6x6.mtx
 │  ├─ dense6x6_rhs.mtx
 │  ├─ strongScaling/…        # e.g., s3dkt3m2.mtx and *_rhs.mtx
-│  └─ weakScaling/…          # e.g., nasa4704, bodyy5, pdb1HYS, F2, s3dkt3m2
+│  └─ weakScaling/…          # e.g., P1.mtx and *_rhs.mtx
 ├─ ca_gmres.c
 ├─ ca_gmres.h
 ├─ ·······
